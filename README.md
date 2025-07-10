@@ -141,3 +141,4 @@ kubectl get pods | grep productcatalogservice
 
 - ✅ Ajuste opcional no número de réplicas de microserviços
 
+
