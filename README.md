@@ -140,3 +140,4 @@ kubectl get pods | grep productcatalogservice
 - ✅ Acesso ao front-end da aplicação
 
 - ✅ Ajuste opcional no número de réplicas de microserviços
+
