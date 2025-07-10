@@ -48,9 +48,9 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
  kubectl port-forward svc/argocd-server -n argocd 8080:443
 
  ```
--Interface acessada via: https://localhost:8080
+- Interface acessada via: https://localhost:8080
 
--Usuário e senha padrões utilizados para login.
+- Usuário e senha padrões utilizados para login.
 
 🔎 A senha inicial do usuário admin está armazenada como um secret no namespace argocd. Para obtê-la, basta rodar:
 
@@ -58,7 +58,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
 ```
 
--Esse comando retorna a senha em texto plano. Depois do primeiro login, é recomendável trocá-la diretamente pela interface web ou via CLI.
+- Esse comando retorna a senha em texto plano. Depois do primeiro login, é recomendável trocá-la diretamente pela interface web ou via CLI.
 
 ### 4️⃣ Criação do App no ArgoCD Para implantar os microserviços da Online Boutique via GitOps, criei um novo App diretamente na interface web do ArgoCD. Eis os passos essenciais:
 
@@ -66,24 +66,77 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 2.Preencha os campos da seguinte forma:
 
--Application Name: online-boutique
+- Application Name: online-boutique
 
--Project: default
+- Project: default
 
--Sync Policy: manual (ou automática, conforme desejado)
+- Sync Policy: manual (ou automática, conforme desejado)
 
--Repository URL: URL do repositório Git com os manifests
+- Repository URL: URL do repositório Git com os manifests
 
--Revision: HEAD
+- Revision: HEAD
 
--Path: caminho para o arquivo YAML (ex: k8s)
+- Path: caminho para o arquivo YAML (ex: k8s)
 
--Cluster URL: https://kubernetes.default.svc
+- Cluster URL: https://kubernetes.default.svc
 
--Namespace: default
+- Namespace: default
 
 3.Após configurar, clique em Create.
 
 4.Com o App criado, clique em Sync para iniciar o deploy dos microserviços no cluster.
 
-✅ O ArgoCD lê os arquivos diretamente do GitHub e aplica as configurações no Kubernetes automaticamente — garantindo rastreabilidade e controle via GitOps.
+- ✅ O ArgoCD lê os arquivos diretamente do GitHub e aplica as configurações no Kubernetes automaticamente — garantindo rastreabilidade e controle via GitOps.
+
+### 5️⃣ Acesse o front-end da aplicação, o serviço front-end é do tipo ClusterIP, então utilize:
+
+```bash
+kubectl port-forward svc/frontend -n default 8081:80
+```
+- 🧩 Ajuste no Número de Réplicas dos Microserviços Após o deploy inicial, é possível personalizar a quantidade de réplicas de cada serviço para testar escalabilidade ou distribuir melhor o tráfego.
+ 
+✍️ Exemplo: alterar réplicas do ''productcatalogservice''
+ 
+ 1.No arquivo YAML:
+
+ ```yaml
+ apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productcatalogservice
+spec:
+  replicas: 3  # Altere este valor conforme desejado
+  ...
+```
+
+-📌 Etapas para aplicar a alteração,edite o manifest .yaml no seu repositório Git.
+
+2.Faça o commit e o push:
+
+```bash
+git add .
+git commit -m "Ajuste: aumentar réplicas para productcatalogservice"
+git push origin main
+```
+
+3.Acesse o ArgoCD e clique em Refresh ou aguarde a sincronização automática.
+
+4.Verifique os novos pods:
+ 
+```bash
+kubectl get pods | grep productcatalogservice
+```
+
+📦 Entregas Realizadas:
+
+- ✅ Repositório Git público com estrutura de manifests
+
+- ✅ Deploy completo do ArgoCD
+
+- ✅ App criado e sincronizado com sucesso no ArgoCD
+
+- ✅ Verificação de pods em execução
+
+- ✅ Acesso ao front-end da aplicação
+
+- ✅ Ajuste opcional no número de réplicas de microserviços
