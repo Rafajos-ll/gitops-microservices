@@ -60,7 +60,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 - Esse comando retorna a senha em texto plano. Depois do primeiro login, é recomendável trocá-la diretamente pela interface web ou via CLI.
 
-### 4️⃣ Criação do App no ArgoCD Para implantar os microserviços da Online Boutique via GitOps, criei um novo App diretamente na interface web do ArgoCD. Eis os passos essenciais:
+### 4️⃣ Criação do App no ArgoCD Para implantar os microserviços da Online Boutique via GitOps, crie um novo App diretamente na interface web do ArgoCD. Eis os passos essenciais:
 
 1.Clique em "NEW APP" na interface principal.
 
