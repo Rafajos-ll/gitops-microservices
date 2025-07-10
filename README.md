@@ -30,4 +30,13 @@ Implantar um conjunto de microserviços (Online Boutique) em Kubernetes local us
  gitops-microservices/  
   └── k8s/ 
    └── online-boutique.yaml 
-   
+
+
+### 2️⃣ Instalação do ArgoCD no cluster Kubernetes
+
+```bash
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+```
+
